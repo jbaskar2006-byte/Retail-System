@@ -32,7 +32,7 @@ if %ERRORLEVEL% EQU 0 (
     "%MYSQL_CMD%" -u root -pRoot@123 < "%~dp0database\seed.sql" 2>nul
     echo Database initialized and seeded successfully!
 ) else (
-    echo MySQL setup complete or already running. Proceeding to server launch...
+    echo MySQL setup verified. Proceeding to server launch...
 )
 
 echo.
@@ -40,16 +40,16 @@ echo.
 echo [2/3] Starting Golang Backend API on Port 8080...
 start "Retail Backend (Port 8080)" cmd /k "cd /d "%~dp0database\backend" && go run main.go"
 
-:: WAIT FOR BACKEND TO BIND
-timeout /t 4 /nobreak > nul
+:: WAIT 4 SECONDS FOR BACKEND TO BIND (USING PING FOR 100% WINDOWS COMPATIBILITY)
+ping 127.0.0.1 -n 5 > nul
 
 :: STEP 3: START FRONTEND
 echo [3/3] Starting React Frontend Dashboard on Port 3005...
 start "Retail Frontend (Port 3005)" cmd /k "cd /d "%~dp0frontend" && set PORT=3005&& set HOST=0.0.0.0&& npm start"
 
-:: WAIT AND LAUNCH BROWSER
-timeout /t 5 /nobreak > nul
-echo Launching Retail Dashboard in your default browser...
+:: WAIT 5 SECONDS AND LAUNCH BROWSER
+ping 127.0.0.1 -n 6 > nul
+echo Opening Retail Dashboard in your default web browser...
 start http://localhost:3005
 
 echo.
