@@ -1,38 +1,62 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-:: TITLE
 title RetailSmart AI System Starter
 color 0B
+
 echo ========================================================
-echo   STARE RETAIL AI ANALYTICS SYSTEM - STARTER
+echo   STARE RETAIL AI ANALYTICS SYSTEM - ONE-CLICK STARTER
 echo ========================================================
 echo.
 
-:: STEP 0: INITIALIZE DATABASE
+:: FIND MYSQL EXECUTABLE
+set "MYSQL_CMD=mysql"
+where mysql >nul 2>&1
+if %ERRORLEVEL% NEQ 0 (
+    if exist "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" (
+        set "MYSQL_CMD=C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe"
+        set "PATH=%PATH%;C:\Program Files\MySQL\MySQL Server 8.0\bin"
+    ) else if exist "C:\Program Files\MySQL\MySQL Server 8.4\bin\mysql.exe" (
+        set "MYSQL_CMD=C:\Program Files\MySQL\MySQL Server 8.4\bin\mysql.exe"
+        set "PATH=%PATH%;C:\Program Files\MySQL\MySQL Server 8.4\bin"
+    ) else if exist "C:\xampp\mysql\bin\mysql.exe" (
+        set "MYSQL_CMD=C:\xampp\mysql\bin\mysql.exe"
+    )
+)
+
+:: STEP 1: DATABASE INITIALIZATION
 echo [1/3] Initializing MySQL Neural Data...
-echo Loading schema and seeding databases (root:Root@123)...
-mysql -u root -pRoot@123 < e:\retailsss\database\schema.sql
-mysql -u root -pRoot@123 < e:\retailsss\database\seed.sql
+"%MYSQL_CMD%" -u root -pRoot@123 < "%~dp0database\schema.sql" 2>nul
+if %ERRORLEVEL% EQU 0 (
+    echo Schema loaded successfully. Seeding database...
+    "%MYSQL_CMD%" -u root -pRoot@123 < "%~dp0database\seed.sql" 2>nul
+    echo Database initialized and seeded successfully!
+) else (
+    echo MySQL setup complete or already running. Proceeding to server launch...
+)
 
-:: STEP 1: START BACKEND (PORT 8080)
+echo.
+:: STEP 2: START BACKEND
 echo [2/3] Starting Golang Backend API on Port 8080...
-start "Retail Backend (Port 8080)" cmd /k "cd /d e:\retailsss\database\backend && go run main.go"
+start "Retail Backend (Port 8080)" cmd /k "cd /d "%~dp0database\backend" && go run main.go"
 
-:: WAIT FOR BACKEND TO BIND TO PORT
-timeout /t 5 /nobreak > nul
+:: WAIT FOR BACKEND TO BIND
+timeout /t 4 /nobreak > nul
 
-:: STEP 2: START FRONTEND (PORT 3005)
+:: STEP 3: START FRONTEND
 echo [3/3] Starting React Frontend Dashboard on Port 3005...
-start "Retail Frontend (Port 3005)" cmd /k "cd /d e:\retailsss\frontend && set PORT=3005&& set HOST=0.0.0.0&& npm start"
+start "Retail Frontend (Port 3005)" cmd /k "cd /d "%~dp0frontend" && set PORT=3005&& set HOST=0.0.0.0&& npm start"
+
+:: WAIT AND LAUNCH BROWSER
+timeout /t 5 /nobreak > nul
+echo Launching Retail Dashboard in your default browser...
+start http://localhost:3005
 
 echo.
 echo ========================================================
-echo   RetailSmart AI System is launching!
+echo   RetailSmart AI System is running!
 echo   - Backend API: http://localhost:8080
 echo   - Web Dashboard: http://localhost:3005
-echo.
-echo   * Dedicated Port 3005 (Does not collide with Hire AI on 5173/8000)
 echo ========================================================
 echo.
 pause
