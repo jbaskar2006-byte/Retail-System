@@ -1,9 +1,11 @@
+# 🌐 [🚀 CLICK HERE TO LAUNCH LIVE WEB APPLICATION](https://jbaskar2006-byte.github.io/Retail-System/)
+
 # 🛍️ RetailSmart AI — Neural Retail Analytics & Management System
 
+[![Live Demo](https://img.shields.io/badge/Live-Web_Dashboard-green?style=for-the-badge&logo=google-chrome)](https://jbaskar2006-byte.github.io/Retail-System/)
 [![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![React Version](https://img.shields.io/badge/React-19.2-61DAFB?style=flat&logo=react)](https://react.dev)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat&logo=mysql)](https://www.mysql.com)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An **AI-driven, multi-territory retail analytics engine** built with a high-performance **Golang Fiber backend**, **MySQL multi-database architecture**, and a modern **React 19 Dashboard**. 
 
