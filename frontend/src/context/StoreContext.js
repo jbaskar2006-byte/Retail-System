@@ -15,16 +15,27 @@ export function StoreProvider({ children }) {
   const [refreshInterval, setRefreshInterval] = useState(30000);
   const [notifications, setNotifications] = useState(true);
   const [voiceAlerts, setVoiceAlerts] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const speak = useCallback((text) => {
     if (!voiceAlerts) return;
-    speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'en-US';
-    utter.rate = 0.9;
-    utter.pitch = 1;
-    speechSynthesis.speak(utter);
+    try {
+      speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.9;
+      utter.pitch = 1;
+      speechSynthesis.speak(utter);
+    } catch {}
   }, [voiceAlerts]);
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
 
   return (
     <StoreContext.Provider value={{
@@ -38,6 +49,10 @@ export function StoreProvider({ children }) {
       setNotifications,
       voiceAlerts,
       setVoiceAlerts,
+      mobileMenuOpen,
+      setMobileMenuOpen,
+      toggleMobileMenu,
+      closeMobileMenu,
       speak,
       currentStore: STORE_OPTIONS.find(s => s.id === selectedStore),
     }}>

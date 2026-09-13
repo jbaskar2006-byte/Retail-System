@@ -1,10 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import { useStore, STORE_OPTIONS } from '../context/StoreContext';
-import { getAlerts, markAlertRead } from '../api';
+import { getAlerts } from '../api';
 import toast from 'react-hot-toast';
 
 export default function TopBar({ title }) {
-  const { selectedStore, setSelectedStore, autoRefresh, setAutoRefresh, voiceAlerts, setVoiceAlerts, speak } = useStore();
+  const { 
+    selectedStore, 
+    setSelectedStore, 
+    autoRefresh, 
+    setAutoRefresh, 
+    voiceAlerts, 
+    setVoiceAlerts, 
+    toggleMobileMenu,
+    speak 
+  } = useStore();
   const alertPollRef = useRef(null);
 
   useEffect(() => {
@@ -25,7 +34,18 @@ export default function TopBar({ title }) {
 
   return (
     <header className="topbar">
-      <div className="topbar-title">{title}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        {/* HAMBURGER TOGGLE FOR MOBILE */}
+        <button 
+          className="mobile-menu-toggle"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle Navigation Menu"
+        >
+          🍔
+        </button>
+        <div className="topbar-title">{title}</div>
+      </div>
+
       <div className="topbar-right">
         {/* Auto Refresh Toggle */}
         <button
@@ -42,7 +62,7 @@ export default function TopBar({ title }) {
           onClick={() => setVoiceAlerts(v => !v)}
           title="Toggle voice alerts"
         >
-          {voiceAlerts ? '🔊 Voice ON' : '🔇 Voice'}
+          {voiceAlerts ? '🔊 Voice' : '🔇 Voice'}
         </button>
 
         {/* Store Selector */}
@@ -59,7 +79,7 @@ export default function TopBar({ title }) {
         </div>
 
         {/* Time */}
-        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+        <div className="topbar-time" style={{ fontSize: 12, color: 'var(--text-muted)' }}>
           {new Date().toLocaleTimeString()}
         </div>
       </div>

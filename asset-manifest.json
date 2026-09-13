@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Retail-System/static/css/main.ba226fa8.css",
-    "main.js": "/Retail-System/static/js/main.60203c5b.js",
+    "main.css": "/Retail-System/static/css/main.97586abe.css",
+    "main.js": "/Retail-System/static/js/main.eec05dcd.js",
     "static/js/239.5491b2ce.chunk.js": "/Retail-System/static/js/239.5491b2ce.chunk.js",
     "static/js/977.20456469.chunk.js": "/Retail-System/static/js/977.20456469.chunk.js",
     "static/js/732.a38800b4.chunk.js": "/Retail-System/static/js/732.a38800b4.chunk.js",
     "index.html": "/Retail-System/index.html",
-    "main.ba226fa8.css.map": "/Retail-System/static/css/main.ba226fa8.css.map",
-    "main.60203c5b.js.map": "/Retail-System/static/js/main.60203c5b.js.map",
+    "main.97586abe.css.map": "/Retail-System/static/css/main.97586abe.css.map",
+    "main.eec05dcd.js.map": "/Retail-System/static/js/main.eec05dcd.js.map",
     "239.5491b2ce.chunk.js.map": "/Retail-System/static/js/239.5491b2ce.chunk.js.map",
     "977.20456469.chunk.js.map": "/Retail-System/static/js/977.20456469.chunk.js.map",
     "732.a38800b4.chunk.js.map": "/Retail-System/static/js/732.a38800b4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ba226fa8.css",
-    "static/js/main.60203c5b.js"
+    "static/css/main.97586abe.css",
+    "static/js/main.eec05dcd.js"
   ]
 }
