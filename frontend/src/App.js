@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 import Sidebar from './components/Sidebar';
@@ -21,8 +21,8 @@ import Unsold from './pages/Unsold';
 import Demand from './pages/Demand';
 import Salary from './pages/Salary';
 import Attendance from './pages/Attendance';
-import LoansPage from './pages/Finance'; // Reuse or wrap
-import AdsPage from './pages/Finance'; // Reuse or wrap
+import LoansPage from './pages/Finance';
+import AdsPage from './pages/Finance';
 
 function App() {
   return (

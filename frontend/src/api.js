@@ -1,9 +1,79 @@
 import axios from 'axios';
+import { 
+  mockDashboard, 
+  mockProducts, 
+  mockSalaries, 
+  mockCategorySales, 
+  mockTrends, 
+  mockAlerts, 
+  mockCompare, 
+  mockAds, 
+  mockLoans, 
+  mockDemand, 
+  mockWorkers 
+} from './mockData';
 
 const hostname = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
 const BASE = process.env.REACT_APP_API_URL || `http://${hostname}:8080/api`;
 
-const api = axios.create({ baseURL: BASE });
+const api = axios.create({ baseURL: BASE, timeout: 4000 });
+
+// RESPONSE INTERCEPTOR FOR FALLBACK MOCK DATA ON GITHUB PAGES / STANDALONE PREVIEW
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const url = error.config?.url || '';
+    console.warn(`[RetailSmart AI Engine] Backend offline or unreachable at ${url}. Serving fallback standalone dataset.`);
+
+    let data = [];
+    let insight = 'Standalone Mode Active';
+    let decision = 'All features enabled in preview mode';
+    let alertType = 'info';
+
+    if (url.includes('/dashboard')) {
+      data = mockDashboard;
+      insight = `Total revenue ₹${mockDashboard.total_revenue.toLocaleString()} across 3 stores`;
+    } else if (url.includes('/analytics/salary')) {
+      data = mockSalaries;
+      insight = `${mockSalaries.length} salary records retrieved (Auditable)`;
+    } else if (url.includes('/products')) {
+      data = mockProducts;
+    } else if (url.includes('/analytics/sales')) {
+      data = mockCategorySales;
+    } else if (url.includes('/analytics/trends')) {
+      data = mockTrends;
+    } else if (url.includes('/alerts')) {
+      data = mockAlerts;
+    } else if (url.includes('/analytics/store-compare')) {
+      data = mockCompare;
+    } else if (url.includes('/analytics/ads')) {
+      data = mockAds;
+    } else if (url.includes('/analytics/loans')) {
+      data = mockLoans;
+    } else if (url.includes('/analytics/demand')) {
+      data = mockDemand;
+    } else if (url.includes('/workers')) {
+      data = mockWorkers;
+    } else if (url.includes('/simulate')) {
+      return Promise.resolve({
+        data: { message: 'Simulation completed', results: ['Store 1: 10 orders simulated', 'Store 2: 5 workers marked absent'], type: 'heavy_sales' }
+      });
+    } else if (url.includes('/health')) {
+      return Promise.resolve({ data: { status: 'healthy', mode: 'standalone' } });
+    } else {
+      data = mockProducts;
+    }
+
+    return Promise.resolve({
+      data: {
+        data,
+        insight,
+        decision,
+        alertType
+      }
+    });
+  }
+);
 
 export const getDashboard = (store = 0) => api.get(`/dashboard?store=${store}`);
 export const getProducts = (store = 0, category = '') => api.get(`/products?store=${store}&category=${category}`);
